@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="et">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Steam Collect — Demo</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#090b12;color:#eef2ff;font-family:Inter,system-ui,Arial,sans-serif}header{height:72px;border-bottom:1px solid #202638;background:#0d1019;display:flex;align-items:center;justify-content:space-between;padding:0 6vw;position:sticky;top:0;z-index:2}.logo{font-weight:900;letter-spacing:.5px}.logo span{color:#7c8cff}.user{display:flex;gap:12px;align-items:center}.btn{border:0;border-radius:10px;padding:12px 18px;font-weight:800;cursor:pointer;background:#7c8cff;color:white}.btn:hover{filter:brightness(1.08)}.ghost{background:#1a2030}.wrap{max-width:1100px;margin:auto;padding:60px 20px}.hero{text-align:center;padding:55px 0}.hero h1{font-size:clamp(42px,7vw,76px);margin:0 0 14px}.hero p{color:#9aa4bd;max-width:620px;margin:0 auto 28px;line-height:1.6}.card{background:linear-gradient(145deg,#111625,#0c101a);border:1px solid #20283c;border-radius:20px;padding:24px;box-shadow:0 20px 70px #0005}.stats{display:flex;gap:12px;justify-content:center;margin-bottom:25px}.stat{background:#111726;border:1px solid #242d43;padding:12px 18px;border-radius:12px;color:#aeb8cf}.stat b{color:white}.case{max-width:720px;margin:auto;text-align:center}.casebox{height:190px;border:1px solid #303a55;border-radius:18px;display:grid;place-items:center;background:radial-gradient(circle at center,#1b2440,#0b0e16 65%);margin:20px 0;overflow:hidden}.item{font-size:38px;font-weight:900;letter-spacing:1px}.rarity{margin-top:8px;color:#aab5ce}.inventory{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-top:18px}.inv{padding:18px;border-radius:14px;border:1px solid #252e44;background:#101522}.inv b{display:block;margin-bottom:7px}.Common{color:#b9c2d0}.Uncommon{color:#6ee7a5}.Rare{color:#65a9ff}.Epic{color:#c184ff}.Legendary{color:#ffbf69}.note{color:#77829b;font-size:13px;margin-top:25px;text-align:center}.hidden{display:none}
+</style></head>
+<body>
+<header><div class="logo">STEAM <span>COLLECT</span></div><div id="account"></div></header>
+<main class="wrap">
+<section id="loggedOut" class="hero"><h1>Collect. Open. Discover.</h1><p>Steam-loginiga kollektsiooni-demo, kus saad avada virtuaalseid kosmeetilisi esemeid ja koguda oma inventari.</p><a class="btn" href="/auth/steam">Sign in through Steam</a><div class="note">Demo only — no real money, trading or cash-out.</div></section>
+<section id="app" class="hidden">
+<div class="stats"><div class="stat">Demo coins: <b id="coins">0</b></div><button class="btn ghost" onclick="logout()">Log out</button></div>
+<div class="card case"><h2>✨ Mystery Case</h2><p class="rarity">Cost: 100 demo coins</p><div class="casebox"><div><div id="result" class="item">?</div><div id="rarity" class="rarity">Open a case</div></div></div><button class="btn" onclick="openCase()">OPEN CASE</button></div>
+<h2 style="margin-top:55px">Your Collection</h2><div id="inventory" class="inventory"></div>
+<div class="note">This prototype uses Steam OpenID only for identity. Your Steam password is never entered into this site.</div>
+</section></main>
+<script>
+const $=id=>document.getElementById(id);
+async function load(){const r=await fetch('/api/me');const d=await r.json();if(!d.loggedIn)return;$('loggedOut').classList.add('hidden');$('app').classList.remove('hidden');$('account').innerHTML='<span>'+d.steamId+'</span>';$('coins').textContent=d.coins;render(d.inventory)}
+function render(items){$('inventory').innerHTML=items.length?items.map(x=>`<div class="inv"><b class="${x.rarity}">${x.name}</b><span class="${x.rarity}">${x.rarity}</span></div>`).join(''):'<div class="note">Your collection is empty.</div>'}
+async function openCase(){const r=await fetch('/api/open',{method:'POST',headers:{'Content-Type':'application/json'}});const d=await r.json();if(!r.ok)return alert(d.error);$('result').textContent=d.item.name;$('rarity').textContent=d.item.rarity;$('rarity').className='rarity '+d.item.rarity;$('coins').textContent=d.coins;render(d.inventory)}
+async function logout(){await fetch('/api/logout',{method:'POST'});location.reload()}
+load();
+</script></body></html>
