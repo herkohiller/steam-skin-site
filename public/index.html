@@ -1,593 +1,1148 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SkinClub — Demo</title>
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>SkinClub</title>
+
 
   <style>
-    * { box-sizing: border-box; }
+
+    * {
+      box-sizing: border-box;
+    }
+
 
     :root {
+
       --bg: #08090d;
-      --panel: #11141c;
-      --panel2: #171a23;
-      --border: #292e3a;
+      --panel: #10131a;
+      --panel2: #151922;
+      --border: #292e39;
+
       --text: #f5f7fb;
       --muted: #858d9e;
+
       --purple: #805cff;
       --purple2: #a98cff;
-      --cyan: #36d9ff;
-      --yellow: #f3c64f;
+
+      --blue: #4ba7ff;
+      --pink: #c45cff;
+      --gold: #ffbd45;
+
     }
 
-    body {
-      margin: 0;
-      background:
-        radial-gradient(circle at 80% 0%, rgba(128,92,255,.18), transparent 30%),
-        radial-gradient(circle at 20% 100%, rgba(54,217,255,.08), transparent 30%),
-        var(--bg);
-      color: var(--text);
-      font-family: Inter, system-ui, Arial, sans-serif;
+
+    html {
+      scroll-behavior: smooth;
     }
+
+
+    body {
+
+      margin: 0;
+
+      background:
+        radial-gradient(
+          circle at 75% 0%,
+          rgba(128,92,255,.18),
+          transparent 30%
+        ),
+        #08090d;
+
+      color: var(--text);
+
+      font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    }
+
 
     button {
       font: inherit;
-      cursor: pointer;
     }
+
+
+    /* SIDEBAR */
 
     .sidebar {
+
       position: fixed;
-      inset: 0 auto 0 0;
+
+      left: 0;
+      top: 0;
+      bottom: 0;
+
       width: 235px;
+
       padding: 22px 16px;
-      background: rgba(8,9,13,.96);
-      border-right: 1px solid var(--border);
-      z-index: 10;
+
+      background: rgba(8,9,13,.97);
+
+      border-right:
+        1px solid var(--border);
+
+      z-index: 50;
+
     }
+
 
     .logo {
+
       display: flex;
+
       align-items: center;
-      gap: 10px;
-      margin: 5px 8px 38px;
+
+      gap: 11px;
+
+      margin:
+        5px 8px 38px;
+
       font-size: 20px;
+
       font-weight: 900;
+
+      letter-spacing: -.04em;
+
     }
 
-    .logo-box {
-      width: 35px;
-      height: 35px;
+
+    .logo-icon {
+
+      width: 36px;
+      height: 36px;
+
       border-radius: 10px;
-      background: linear-gradient(135deg,var(--purple),var(--cyan));
-      box-shadow: 0 0 30px rgba(128,92,255,.4);
+
+      background:
+        linear-gradient(
+          135deg,
+          var(--purple),
+          #42dfff
+        );
+
+      box-shadow:
+        0 0 30px
+        rgba(128,92,255,.35);
+
     }
 
-    .logo span span {
+
+    .logo span {
       color: var(--purple2);
     }
 
-    .menu-title {
-      margin: 18px 10px 8px;
+
+    .label {
+
+      margin:
+        18px 10px 8px;
+
       color: #606878;
+
       font-size: 10px;
+
       font-weight: 800;
+
       letter-spacing: .15em;
+
       text-transform: uppercase;
+
     }
 
-    .menu a {
+
+    .nav a {
+
       display: flex;
+
       align-items: center;
+
       gap: 12px;
+
       padding: 11px 12px;
+
       margin: 3px 0;
+
       border-radius: 10px;
-      color: #9199aa;
+
+      color: #9098a9;
+
       text-decoration: none;
+
       font-size: 13px;
+
       font-weight: 650;
+
+      transition: .15s;
+
     }
 
-    .menu a:hover,
-    .menu a.active {
-      color: white;
+
+    .nav a:hover,
+    .nav a.active {
+
       background: #171a23;
+
+      color: white;
+
     }
 
-    .menu-icon {
+
+    .nav-icon {
+
       width: 20px;
+
       text-align: center;
-      font-size: 16px;
+
     }
 
-    .demo-box {
-      position: absolute;
-      left: 16px;
-      right: 16px;
-      bottom: 18px;
-      padding: 13px;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      background: #0d0f14;
-      color: #747d8f;
-      font-size: 10px;
-      line-height: 1.6;
-    }
 
-    .demo-box strong {
-      color: var(--purple2);
-    }
+    /* MAIN */
 
     .main {
+
       margin-left: 235px;
+
       min-height: 100vh;
-      padding: 18px 28px 60px;
+
+      padding:
+        18px 28px 70px;
+
     }
+
 
     .topbar {
+
       height: 58px;
+
       display: flex;
+
       align-items: center;
+
       justify-content: space-between;
+
       margin-bottom: 22px;
+
     }
 
-    .breadcrumb {
-      color: #71798b;
+
+    .crumb {
+
+      color: #747c8d;
+
       font-size: 12px;
+
     }
 
-    .breadcrumb strong {
+
+    .crumb strong {
       color: white;
     }
+
 
     .account {
+
       display: flex;
+
       align-items: center;
-      gap: 9px;
+
+      gap: 10px;
+
     }
 
-    .coins {
-      padding: 9px 13px;
-      border: 1px solid #373d4a;
-      border-radius: 10px;
-      background: #12151c;
-      color: var(--yellow);
-      font-size: 13px;
-      font-weight: 850;
-    }
 
-    .steam-login,
-    .logout {
-      border-radius: 10px;
-      padding: 10px 16px;
-      font-weight: 850;
-      cursor: pointer;
-    }
+    .steam {
 
-    .steam-login {
       border: 0;
+
+      padding:
+        11px 17px;
+
+      border-radius: 10px;
+
       background: white;
+
       color: #08090d;
+
+      font-weight: 850;
+
+      cursor: pointer;
+
+      transition: .15s;
+
     }
 
-    .logout {
-      display: none;
-      border: 1px solid #303541;
-      background: #171a22;
-      color: white;
+
+    .steam:hover {
+
+      transform:
+        translateY(-1px);
+
     }
+
+
+    .logout {
+
+      display: none;
+
+      padding:
+        10px 15px;
+
+      border:
+        1px solid #343a47;
+
+      border-radius: 10px;
+
+      background: #171a22;
+
+      color: white;
+
+      cursor: pointer;
+
+    }
+
+
+    /* HERO */
 
     .hero {
+
       position: relative;
-      min-height: 340px;
+
+      min-height: 355px;
+
       overflow: hidden;
-      border: 1px solid #303542;
+
+      border:
+        1px solid #303542;
+
       border-radius: 20px;
+
       background:
-        radial-gradient(circle at 80% 35%,rgba(128,92,255,.5),transparent 27%),
-        radial-gradient(circle at 90% 80%,rgba(54,217,255,.18),transparent 25%),
-        linear-gradient(110deg,#101218,#181526 55%,#0c1018);
+
+        radial-gradient(
+          circle at 78% 38%,
+          rgba(128,92,255,.48),
+          transparent 28%
+        ),
+
+        radial-gradient(
+          circle at 90% 80%,
+          rgba(54,217,255,.13),
+          transparent 24%
+        ),
+
+        linear-gradient(
+          110deg,
+          #101218,
+          #181526 55%,
+          #0c1018
+        );
+
+      box-shadow:
+        0 30px 80px
+        rgba(0,0,0,.3);
+
     }
+
 
     .hero::after {
+
       content: "✦";
+
       position: absolute;
-      right: 12%;
+
+      right: 11%;
       top: 50%;
-      transform: translateY(-50%);
-      font-size: 190px;
-      color: rgba(255,255,255,.035);
+
+      transform:
+        translateY(-50%);
+
+      color:
+        rgba(255,255,255,.035);
+
+      font-size: 210px;
+
     }
+
 
     .hero-content {
+
       position: relative;
+
       z-index: 2;
-      padding: 55px;
-      max-width: 700px;
+
+      max-width: 680px;
+
+      padding:
+        58px;
+
     }
+
 
     .tag {
+
       display: inline-block;
-      padding: 7px 10px;
-      border: 1px solid rgba(158,132,255,.35);
+
+      padding:
+        7px 10px;
+
+      border:
+        1px solid
+        rgba(158,132,255,.35);
+
       border-radius: 999px;
-      background: rgba(128,92,255,.12);
+
+      background:
+        rgba(128,92,255,.12);
+
       color: #bcaeff;
+
       font-size: 10px;
+
       font-weight: 900;
+
       letter-spacing: .13em;
+
       text-transform: uppercase;
+
     }
 
-    .hero h1 {
-      margin: 18px 0 14px;
-      font-size: clamp(44px,6vw,72px);
-      line-height: .92;
-      letter-spacing: -.055em;
+
+    h1 {
+
+      margin:
+        18px 0 14px;
+
+      font-size:
+        clamp(45px,6vw,74px);
+
+      line-height: .91;
+
+      letter-spacing:
+        -.055em;
+
     }
 
-    .hero h1 span {
-      color: #a38cff;
+
+    h1 span {
+      color: var(--purple2);
     }
+
 
     .hero p {
+
       max-width: 520px;
-      margin: 0 0 26px;
+
       color: #979faf;
+
       line-height: 1.65;
+
       font-size: 14px;
+
+      margin:
+        0 0 27px;
+
     }
 
-    .hero-buttons {
+
+    .hero-actions {
+
       display: flex;
+
       gap: 10px;
+
     }
 
-    .primary,
-    .secondary {
-      border-radius: 11px;
-      padding: 13px 19px;
-      font-weight: 900;
-    }
 
     .primary {
+
       border: 0;
-      background: linear-gradient(135deg,#8567ff,#5d43dc);
+
+      padding:
+        13px 20px;
+
+      border-radius: 11px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #8567ff,
+          #5d43dc
+        );
+
       color: white;
-      box-shadow: 0 12px 35px rgba(101,73,230,.25);
+
+      font-weight: 900;
+
+      cursor: pointer;
+
+      box-shadow:
+        0 12px 35px
+        rgba(101,73,230,.25);
+
     }
+
 
     .secondary {
-      border: 1px solid #383d4a;
+
+      padding:
+        13px 20px;
+
+      border:
+        1px solid #383d4a;
+
+      border-radius: 11px;
+
       background: #151821;
+
       color: white;
+
       text-decoration: none;
+
+      font-weight: 800;
+
     }
+
+
+    /* SECTIONS */
 
     .section-head {
+
       display: flex;
+
       align-items: end;
+
       justify-content: space-between;
-      margin: 34px 0 14px;
+
+      margin:
+        36px 0 15px;
+
     }
+
 
     .section-head h2 {
+
       margin: 0;
-      font-size: 20px;
+
+      font-size: 21px;
+
     }
+
 
     .section-head span {
-      color: #727a8b;
+
+      color: #70798a;
+
       font-size: 11px;
+
     }
+
+
+    /* CASES */
 
     .cases {
+
       display: grid;
-      grid-template-columns: repeat(4,1fr);
+
+      grid-template-columns:
+        repeat(4,minmax(0,1fr));
+
       gap: 14px;
+
     }
+
 
     .case {
-      padding: 15px;
-      border: 1px solid var(--border);
+
+      overflow: hidden;
+
+      padding: 14px;
+
+      border:
+        1px solid var(--border);
+
       border-radius: 15px;
-      background: linear-gradient(180deg,#141720,#0e1016);
+
+      background:
+        linear-gradient(
+          180deg,
+          #141720,
+          #0e1016
+        );
+
+      cursor: pointer;
+
       transition: .18s;
+
     }
+
 
     .case:hover {
-      transform: translateY(-4px);
-      border-color: #555c6c;
-      box-shadow: 0 20px 45px rgba(0,0,0,.3);
+
+      transform:
+        translateY(-5px);
+
+      border-color: #555c6b;
+
+      box-shadow:
+        0 20px 45px
+        rgba(0,0,0,.3);
+
     }
 
-    .case-art {
-      height: 170px;
+
+    .case-image {
+
+      height: 175px;
+
       display: grid;
+
       place-items: center;
+
       border-radius: 11px;
+
       background:
-        radial-gradient(circle,rgba(128,92,255,.35),transparent 35%),
-        linear-gradient(135deg,#202432,#0b0d12);
+
+        radial-gradient(
+          circle,
+          rgba(128,92,255,.32),
+          transparent 36%
+        ),
+
+        linear-gradient(
+          135deg,
+          #202432,
+          #0b0d12
+        );
+
       font-size: 70px;
+
     }
 
-    .case:nth-child(2) .case-art {
+
+    .case:nth-child(2)
+    .case-image {
+
       background:
-        radial-gradient(circle,rgba(54,217,255,.3),transparent 35%),
-        linear-gradient(135deg,#17242d,#0b0d12);
+
+        radial-gradient(
+          circle,
+          rgba(54,217,255,.3),
+          transparent 36%
+        ),
+
+        linear-gradient(
+          135deg,
+          #17242d,
+          #0b0d12
+        );
+
     }
 
-    .case:nth-child(3) .case-art {
+
+    .case:nth-child(3)
+    .case-image {
+
       background:
-        radial-gradient(circle,rgba(104,118,255,.3),transparent 35%),
-        linear-gradient(135deg,#1c2033,#0b0d12);
+
+        radial-gradient(
+          circle,
+          rgba(104,118,255,.3),
+          transparent 36%
+        ),
+
+        linear-gradient(
+          135deg,
+          #1c2033,
+          #0b0d12
+        );
+
     }
 
-    .case:nth-child(4) .case-art {
+
+    .case:nth-child(4)
+    .case-image {
+
       background:
-        radial-gradient(circle,rgba(195,92,255,.3),transparent 35%),
-        linear-gradient(135deg,#25192e,#0b0d12);
+
+        radial-gradient(
+          circle,
+          rgba(195,92,255,.3),
+          transparent 36%
+        ),
+
+        linear-gradient(
+          135deg,
+          #25192e,
+          #0b0d12
+        );
+
     }
+
 
     .case h3 {
-      margin: 13px 0 4px;
+
+      margin:
+        13px 0 5px;
+
       font-size: 15px;
+
     }
+
 
     .case small {
-      color: #747d8f;
+
+      color: #737c8d;
+
+      font-size: 11px;
+
     }
 
-    .case-price {
+
+    .case-action {
+
       margin-top: 13px;
-      color: var(--yellow);
-      font-size: 12px;
+
+      color:
+        #a992ff;
+
+      font-size: 11px;
+
       font-weight: 900;
+
+      letter-spacing: .05em;
+
+      text-transform: uppercase;
+
     }
+
+
+    /* INVENTORY */
 
     .inventory {
+
       display: grid;
-      grid-template-columns: repeat(5,1fr);
+
+      grid-template-columns:
+        repeat(5,minmax(0,1fr));
+
       gap: 12px;
+
     }
+
 
     .skin {
+
       padding: 10px;
-      border: 1px solid var(--border);
+
+      border:
+        1px solid var(--border);
+
       border-radius: 13px;
+
       background: #12151c;
+
     }
+
 
     .skin-art {
-      height: 105px;
+
+      height: 110px;
+
       display: grid;
+
       place-items: center;
+
       border-radius: 9px;
-      background: #181b24;
-      font-size: 38px;
+
+      background:
+        radial-gradient(
+          circle,
+          rgba(128,92,255,.14),
+          transparent 55%
+        ),
+
+        #181b24;
+
+      font-size: 40px;
+
     }
+
 
     .skin-name {
+
       display: block;
+
       margin-top: 9px;
+
       font-size: 12px;
+
       font-weight: 800;
+
     }
+
 
     .skin-rarity {
+
       display: block;
-      margin-top: 3px;
+
+      margin-top: 4px;
+
       color: var(--muted);
+
       font-size: 10px;
+
     }
+
 
     .empty {
+
       grid-column: 1/-1;
-      padding: 30px;
-      border: 1px dashed #303642;
+
+      padding: 34px;
+
+      border:
+        1px dashed #303642;
+
       border-radius: 13px;
+
       color: #747c8e;
+
       text-align: center;
+
     }
 
+
+    /* MODAL */
+
     .modal {
+
       position: fixed;
+
       inset: 0;
+
       display: none;
+
       place-items: center;
+
       padding: 20px;
-      background: rgba(2,3,5,.78);
-      backdrop-filter: blur(9px);
+
+      background:
+        rgba(2,3,5,.8);
+
+      backdrop-filter: blur(10px);
+
       z-index: 100;
+
     }
+
 
     .modal.show {
       display: grid;
     }
 
+
     .modal-box {
-      width: min(700px,100%);
+
+      width:
+        min(700px,100%);
+
       padding: 20px;
-      border: 1px solid #363b49;
+
+      border:
+        1px solid #363b49;
+
       border-radius: 18px;
+
       background: #10131b;
-      box-shadow: 0 35px 100px rgba(0,0,0,.75);
+
+      box-shadow:
+        0 35px 100px
+        rgba(0,0,0,.75);
+
     }
 
+
     .modal-header {
+
       display: flex;
+
       align-items: center;
+
       justify-content: space-between;
+
     }
+
 
     .modal-header h3 {
       margin: 0;
     }
 
+
     .close {
+
       width: 34px;
       height: 34px;
+
       border: 0;
+
       border-radius: 9px;
+
       background: #1b1f28;
+
       color: #aab1bf;
+
       font-size: 20px;
+
+      cursor: pointer;
+
     }
+
 
     .reel {
+
       position: relative;
-      height: 180px;
+
+      height: 185px;
+
       display: grid;
+
       place-items: center;
+
       margin: 20px 0;
-      border: 1px solid #2b3040;
+
+      border:
+        1px solid #2b3040;
+
       border-radius: 13px;
+
       overflow: hidden;
+
       background: #10131a;
+
     }
+
 
     .reel::before {
+
       content: "";
+
       position: absolute;
+
       top: 0;
       bottom: 0;
+
       left: 50%;
+
       width: 2px;
+
       background: var(--purple);
-      box-shadow: 0 0 18px var(--purple);
+
+      box-shadow:
+        0 0 18px var(--purple);
+
     }
+
 
     .reel-icon {
+
       position: relative;
+
       z-index: 2;
-      font-size: 75px;
+
+      font-size: 78px;
+
     }
+
 
     .result {
-      min-height: 62px;
+
+      min-height: 60px;
+
       text-align: center;
+
     }
+
 
     .result strong {
+
       display: block;
+
       font-size: 22px;
+
     }
+
 
     .result span {
+
       color: #858d9e;
+
       font-size: 12px;
+
     }
 
-    .modal-note {
-      margin-top: 13px;
-      color: #686f7e;
-      font-size: 10px;
-      text-align: center;
-    }
+
+    /* MOBILE */
 
     @media(max-width:1050px) {
-      .cases { grid-template-columns: repeat(2,1fr); }
-      .inventory { grid-template-columns: repeat(3,1fr); }
+
+      .cases {
+        grid-template-columns:
+          repeat(2,1fr);
+      }
+
+      .inventory {
+        grid-template-columns:
+          repeat(3,1fr);
+      }
+
     }
+
 
     @media(max-width:720px) {
-      .sidebar { width: 65px; }
+
+      .sidebar {
+        width: 65px;
+      }
+
       .logo span,
-      .menu-title,
-      .menu a span:last-child,
-      .demo-box { display:none; }
+      .label,
+      .nav a span:last-child {
+        display: none;
+      }
 
-      .menu a { justify-content:center; }
-      .main { margin-left:65px; padding:14px; }
+      .nav a {
+        justify-content: center;
+      }
 
-      .hero-content { padding:35px 25px; }
-      .hero h1 { font-size:45px; }
+      .main {
+        margin-left: 65px;
+        padding: 14px;
+      }
 
-      .cases { grid-template-columns:1fr; }
-      .inventory { grid-template-columns:repeat(2,1fr); }
+      .hero-content {
+        padding: 35px 25px;
+      }
+
+      h1 {
+        font-size: 45px;
+      }
+
+      .cases {
+        grid-template-columns: 1fr;
+      }
+
+      .inventory {
+        grid-template-columns:
+          repeat(2,1fr);
+      }
+
     }
+
   </style>
+
 </head>
 
+
 <body>
+
 
   <aside class="sidebar">
 
     <div class="logo">
-      <div class="logo-box"></div>
-      <span>SKINCLUB<span>.</span></span>
+
+      <div class="logo-icon"></div>
+
+      <span>
+        SKINCLUB<span>.</span>
+      </span>
+
     </div>
 
-    <div class="menu-title">Menu</div>
 
-    <nav class="menu">
+    <div class="label">
+      Navigation
+    </div>
+
+
+    <nav class="nav">
+
       <a href="#" class="active">
-        <span class="menu-icon">⌂</span>
+        <span class="nav-icon">⌂</span>
         <span>Home</span>
       </a>
 
       <a href="#cases">
-        <span class="menu-icon">◈</span>
+        <span class="nav-icon">◈</span>
         <span>Cases</span>
       </a>
 
       <a href="#inventory">
-        <span class="menu-icon">▣</span>
+        <span class="nav-icon">▣</span>
         <span>Inventory</span>
       </a>
 
-      <a href="#event">
-        <span class="menu-icon">✦</span>
-        <span>Event</span>
-      </a>
     </nav>
 
-    <div class="menu-title">Account</div>
 
-    <nav class="menu">
+    <div class="label">
+      Account
+    </div>
+
+
+    <nav class="nav">
+
       <a href="#inventory">
-        <span class="menu-icon">◉</span>
+        <span class="nav-icon">◉</span>
         <span>Profile</span>
       </a>
 
-      <a href="#" id="sideLogout">
-        <span class="menu-icon">↪</span>
+      <a href="#" id="logoutSide">
+        <span class="nav-icon">↪</span>
         <span>Log out</span>
       </a>
-    </nav>
 
-    <div class="demo-box">
-      <strong>DEMO MODE</strong><br>
-      Virtual coins only.<br>
-      No real-money deposits,<br>
-      betting or withdrawals.
-    </div>
+    </nav>
 
   </aside>
 
 
   <main class="main">
 
+
     <header class="topbar">
 
-      <div class="breadcrumb">
-        Home › <strong>Event</strong>
+      <div class="crumb">
+        Home › <strong>Collection</strong>
       </div>
+
 
       <div class="account">
 
-        <div class="coins" id="coinBalance">
-          🪙 —
-        </div>
-
-        <button class="steam-login" id="loginButton">
+        <button
+          class="steam"
+          id="login"
+        >
           Sign in with Steam
         </button>
 
-        <button class="logout" id="logoutButton">
+
+        <button
+          class="logout"
+          id="logout"
+        >
           Log out
         </button>
 
@@ -596,131 +1151,265 @@
     </header>
 
 
-    <section class="hero" id="event">
+    <section class="hero">
+
 
       <div class="hero-content">
 
+
         <div class="tag">
-          Limited Demo Event
+          Skin Collection
         </div>
 
+
         <h1>
-          OPEN THE<br>
-          <span>UNKNOWN.</span>
+          BUILD YOUR<br>
+          <span>COLLECTION.</span>
         </h1>
 
+
         <p>
-          Collect virtual CS-style skins, build your inventory
-          and discover rare drops. Everything here uses
-          demo coins only.
+          Discover unique skins, open virtual cases
+          and build your personal collection.
+          Sign in with Steam to get started.
         </p>
 
-        <div class="hero-buttons">
-          <button class="primary" id="heroCaseButton">
+
+        <div class="hero-actions">
+
+          <button
+            class="primary"
+            id="heroOpen"
+          >
             Open a Case
           </button>
 
-          <a class="secondary" href="#cases">
-            View Cases
+
+          <a
+            class="secondary"
+            href="#cases"
+          >
+            Browse Cases
           </a>
+
         </div>
+
 
       </div>
 
     </section>
 
 
-    <div class="section-head" id="cases">
-      <h2>Featured Cases</h2>
-      <span>Virtual collection</span>
+    <div
+      class="section-head"
+      id="cases"
+    >
+
+      <h2>
+        Featured Cases
+      </h2>
+
+      <span>
+        Collection
+      </span>
+
     </div>
 
 
     <section class="cases">
 
-      <article class="case" data-case="Nebula Case">
-        <div class="case-art">🔮</div>
-        <h3>Nebula Case</h3>
-        <small>5 possible drops</small>
-        <div class="case-price">🪙 100 demo coins</div>
+
+      <article
+        class="case"
+        data-case="Nebula Case"
+      >
+
+        <div class="case-image">
+          🔮
+        </div>
+
+        <h3>
+          Nebula Case
+        </h3>
+
+        <small>
+          5 possible skins
+        </small>
+
+        <div class="case-action">
+          Open Case →
+        </div>
+
       </article>
 
-      <article class="case" data-case="Aurora Case">
-        <div class="case-art">🌌</div>
-        <h3>Aurora Case</h3>
-        <small>5 possible drops</small>
-        <div class="case-price">🪙 100 demo coins</div>
+
+      <article
+        class="case"
+        data-case="Aurora Case"
+      >
+
+        <div class="case-image">
+          🌌
+        </div>
+
+        <h3>
+          Aurora Case
+        </h3>
+
+        <small>
+          5 possible skins
+        </small>
+
+        <div class="case-action">
+          Open Case →
+        </div>
+
       </article>
 
-      <article class="case" data-case="Eclipse Case">
-        <div class="case-art">🌑</div>
-        <h3>Eclipse Case</h3>
-        <small>5 possible drops</small>
-        <div class="case-price">🪙 100 demo coins</div>
+
+      <article
+        class="case"
+        data-case="Eclipse Case"
+      >
+
+        <div class="case-image">
+          🌑
+        </div>
+
+        <h3>
+          Eclipse Case
+        </h3>
+
+        <small>
+          5 possible skins
+        </small>
+
+        <div class="case-action">
+          Open Case →
+        </div>
+
       </article>
 
-      <article class="case" data-case="Void Case">
-        <div class="case-art">💠</div>
-        <h3>Void Case</h3>
-        <small>5 possible drops</small>
-        <div class="case-price">🪙 100 demo coins</div>
+
+      <article
+        class="case"
+        data-case="Void Case"
+      >
+
+        <div class="case-image">
+          💠
+        </div>
+
+        <h3>
+          Void Case
+        </h3>
+
+        <small>
+          5 possible skins
+        </small>
+
+        <div class="case-action">
+          Open Case →
+        </div>
+
       </article>
+
 
     </section>
 
 
-    <div class="section-head" id="inventory">
-      <h2>Your Inventory</h2>
-      <span id="inventoryCount">0 items</span>
+    <div
+      class="section-head"
+      id="inventory"
+    >
+
+      <h2>
+        My Collection
+      </h2>
+
+      <span id="inventoryCount">
+        0 items
+      </span>
+
     </div>
 
 
-    <section class="inventory" id="inventoryGrid">
+    <section
+      class="inventory"
+      id="inventoryGrid"
+    >
 
       <div class="empty">
-        Sign in with Steam to view your inventory.
+
+        Sign in with Steam to view
+        your collection.
+
       </div>
 
     </section>
+
 
   </main>
 
 
-  <div class="modal" id="caseModal">
+  <div
+    class="modal"
+    id="modal"
+  >
+
 
     <div class="modal-box">
 
-      <div class="modal-header">
-        <h3 id="modalTitle">Opening Case</h3>
 
-        <button class="close" id="closeModal">
+      <div class="modal-header">
+
+        <h3 id="modalTitle">
+          Nebula Case
+        </h3>
+
+
+        <button
+          class="close"
+          id="close"
+        >
           ×
         </button>
+
       </div>
+
 
       <div class="reel">
-        <div class="reel-icon" id="reelIcon">
+
+        <div
+          class="reel-icon"
+          id="reelIcon"
+        >
           🔮
         </div>
+
       </div>
 
-      <div class="result" id="caseResult">
+
+      <div
+        class="result"
+        id="result"
+      >
+
         <span>
-          Click open to reveal your virtual drop.
+          Open the case to reveal your skin.
         </span>
+
       </div>
+
 
       <button
         class="primary"
-        id="openCaseButton"
+        id="open"
         style="width:100%;margin-top:14px;"
       >
-        Open Case · 100 🪙
+        Open Case
       </button>
 
-      <div class="modal-note">
-        DEMO ONLY — virtual coins have no real-world value.
-      </div>
 
     </div>
 
@@ -729,51 +1418,55 @@
 
   <script>
 
-    const rarityIcons = {
-      Common: "🔫",
-      Uncommon: "🗡️",
-      Rare: "⚡",
-      Epic: "💜",
-      Legendary: "👑"
-    };
 
     let me = null;
-    let selectedCase = "Nebula Case";
+
     let opening = false;
 
 
-    async function loadAccount() {
+    const icons = {
 
-      try {
+      Common: "🔫",
 
-        const response = await fetch("/api/me");
-        me = await response.json();
+      Uncommon: "🗡️",
 
-        renderAccount();
+      Rare: "⚡",
 
-      } catch (error) {
-        console.error(error);
-      }
+      Epic: "💜",
+
+      Legendary: "👑"
+
+    };
+
+
+    async function load() {
+
+      const response =
+        await fetch("/api/me");
+
+      me =
+        await response.json();
+
+      render();
 
     }
 
 
-    function renderAccount() {
+    function render() {
 
       const loggedIn =
         me && me.loggedIn;
 
-      document.getElementById("coinBalance")
-        .textContent =
-        loggedIn ? `🪙 ${me.coins}` : "🪙 —";
 
-      document.getElementById("loginButton")
+      document.getElementById("login")
         .style.display =
         loggedIn ? "none" : "block";
 
-      document.getElementById("logoutButton")
+
+      document.getElementById("logout")
         .style.display =
         loggedIn ? "block" : "none";
+
 
       renderInventory();
 
@@ -783,27 +1476,37 @@
     function renderInventory() {
 
       const grid =
-        document.getElementById("inventoryGrid");
+        document.getElementById(
+          "inventoryGrid"
+        );
+
 
       const count =
-        document.getElementById("inventoryCount");
+        document.getElementById(
+          "inventoryCount"
+        );
 
 
       if (!me || !me.loggedIn) {
 
-        count.textContent = "0 items";
+        count.textContent =
+          "0 items";
 
         grid.innerHTML = `
           <div class="empty">
-            Sign in with Steam to view your inventory.
+            Sign in with Steam to view
+            your collection.
           </div>
         `;
 
         return;
+
       }
 
 
-      const inventory = me.inventory || [];
+      const inventory =
+        me.inventory || [];
+
 
       count.textContent =
         `${inventory.length} item${inventory.length === 1 ? "" : "s"}`;
@@ -813,24 +1516,23 @@
 
         grid.innerHTML = `
           <div class="empty">
-            Your inventory is empty.
-            Open a demo case to collect your first skin.
+            Your collection is empty.
+            Open a case to collect your first skin.
           </div>
         `;
 
         return;
+
       }
 
 
-      grid.innerHTML = inventory.map(item => {
+      grid.innerHTML =
+        inventory.map(item => `
 
-        const rarity =
-          item.rarity || "Common";
-
-        return `
           <div class="skin">
+
             <div class="skin-art">
-              ${rarityIcons[rarity] || "🔫"}
+              ${icons[item.rarity] || "🔫"}
             </div>
 
             <span class="skin-name">
@@ -838,17 +1540,17 @@
             </span>
 
             <span class="skin-rarity">
-              ${rarity}
+              ${item.rarity}
             </span>
-          </div>
-        `;
 
-      }).join("");
+          </div>
+
+        `).join("");
 
     }
 
 
-    function openModal(caseName) {
+    function showCase(name) {
 
       if (!me || !me.loggedIn) {
 
@@ -856,31 +1558,35 @@
           "/auth/steam";
 
         return;
+
       }
 
 
-      selectedCase =
-        caseName || "Nebula Case";
-
-
       document.getElementById("modalTitle")
-        .textContent = selectedCase;
+        .textContent = name;
+
 
       document.getElementById("reelIcon")
         .textContent = "🔮";
 
-      document.getElementById("caseResult")
-        .innerHTML =
-        "<span>Click open to reveal your virtual drop.</span>";
 
-      document.getElementById("openCaseButton")
+      document.getElementById("result")
+        .innerHTML = `
+          <span>
+            Open the case to reveal your skin.
+          </span>
+        `;
+
+
+      document.getElementById("open")
         .disabled = false;
 
-      document.getElementById("openCaseButton")
-        .textContent =
-        "Open Case · 100 🪙";
 
-      document.getElementById("caseModal")
+      document.getElementById("open")
+        .textContent = "Open Case";
+
+
+      document.getElementById("modal")
         .classList.add("show");
 
     }
@@ -890,34 +1596,45 @@
 
       if (opening) return;
 
+
       opening = true;
 
+
       const button =
-        document.getElementById("openCaseButton");
+        document.getElementById("open");
+
 
       const icon =
         document.getElementById("reelIcon");
 
+
       const result =
-        document.getElementById("caseResult");
+        document.getElementById("result");
 
 
       button.disabled = true;
-      button.textContent = "Opening...";
+
+      button.textContent =
+        "Opening...";
 
 
-      const icons =
+      const animationIcons =
         ["🔫","🗡️","⚡","💜","👑"];
 
-      let i = 0;
+
+      let index = 0;
+
 
       const animation =
         setInterval(() => {
 
           icon.textContent =
-            icons[i % icons.length];
+            animationIcons[
+              index %
+              animationIcons.length
+            ];
 
-          i++;
+          index++;
 
         }, 100);
 
@@ -925,13 +1642,12 @@
       try {
 
         const response =
-          await fetch("/api/open", {
-            method: "POST",
-            headers: {
-              "Content-Type":
-                "application/json"
+          await fetch(
+            "/api/open",
+            {
+              method: "POST"
             }
-          });
+          );
 
 
         const data =
@@ -944,46 +1660,64 @@
         if (!response.ok) {
 
           result.innerHTML =
-            `<span>${data.error || "Could not open case."}</span>`;
+            `<span>${data.error || "Something went wrong."}</span>`;
 
           button.disabled = false;
+
           button.textContent =
-            "Open Case · 100 🪙";
+            "Open Case";
 
           opening = false;
+
           return;
 
         }
 
 
         icon.textContent =
-          rarityIcons[data.item.rarity] || "🔫";
+          icons[data.item.rarity] ||
+          "🔫";
 
 
         result.innerHTML = `
-          <strong>${data.item.name}</strong>
-          <span>${data.item.rarity} · Added to inventory</span>
+
+          <strong>
+            ${data.item.name}
+          </strong>
+
+          <span>
+            ${data.item.rarity}
+            · Added to collection
+          </span>
+
         `;
 
 
-        me.coins = data.coins;
-        me.inventory = data.inventory;
-
-        renderAccount();
-
-        button.textContent = "Opened ✓";
+        me.inventory =
+          data.inventory;
 
 
-      } catch (error) {
+        renderInventory();
+
+
+        button.textContent =
+          "Collected ✓";
+
+
+      } catch {
 
         clearInterval(animation);
 
-        result.innerHTML =
-          "<span>Network error. Try again.</span>";
+        result.innerHTML = `
+          <span>
+            Connection error. Please try again.
+          </span>
+        `;
 
         button.disabled = false;
+
         button.textContent =
-          "Open Case · 100 🪙";
+          "Open Case";
 
       }
 
@@ -993,82 +1727,127 @@
     }
 
 
-    document.getElementById("loginButton")
-      .addEventListener("click", () => {
-        window.location.href =
-          "/auth/steam";
-      });
+    document.getElementById("login")
+      .addEventListener(
+        "click",
+        () => {
+
+          window.location.href =
+            "/auth/steam";
+
+        }
+      );
 
 
-    document.getElementById("logoutButton")
-      .addEventListener("click", async () => {
+    document.getElementById("logout")
+      .addEventListener(
+        "click",
+        async () => {
 
-        await fetch("/api/logout", {
-          method: "POST"
-        });
+          await fetch(
+            "/api/logout",
+            {
+              method: "POST"
+            }
+          );
 
-        location.reload();
+          location.reload();
 
-      });
-
-
-    document.getElementById("sideLogout")
-      .addEventListener("click", async event => {
-
-        event.preventDefault();
-
-        await fetch("/api/logout", {
-          method: "POST"
-        });
-
-        location.reload();
-
-      });
+        }
+      );
 
 
-    document.getElementById("heroCaseButton")
-      .addEventListener("click", () => {
-        openModal("Nebula Case");
-      });
+    document.getElementById("logoutSide")
+      .addEventListener(
+        "click",
+        async event => {
+
+          event.preventDefault();
+
+          await fetch(
+            "/api/logout",
+            {
+              method: "POST"
+            }
+          );
+
+          location.reload();
+
+        }
+      );
+
+
+    document.getElementById("heroOpen")
+      .addEventListener(
+        "click",
+        () => {
+
+          showCase(
+            "Nebula Case"
+          );
+
+        }
+      );
 
 
     document.querySelectorAll(".case")
       .forEach(card => {
 
-        card.addEventListener("click", () => {
-          openModal(card.dataset.case);
-        });
+        card.addEventListener(
+          "click",
+          () => {
+
+            showCase(
+              card.dataset.case
+            );
+
+          }
+        );
 
       });
 
 
-    document.getElementById("closeModal")
-      .addEventListener("click", () => {
+    document.getElementById("close")
+      .addEventListener(
+        "click",
+        () => {
 
-        document.getElementById("caseModal")
-          .classList.remove("show");
-
-      });
-
-
-    document.getElementById("caseModal")
-      .addEventListener("click", event => {
-
-        if (event.target.id === "caseModal") {
-          event.currentTarget
+          document.getElementById("modal")
             .classList.remove("show");
+
         }
-
-      });
-
-
-    document.getElementById("openCaseButton")
-      .addEventListener("click", openCase);
+      );
 
 
-    loadAccount();
+    document.getElementById("modal")
+      .addEventListener(
+        "click",
+        event => {
+
+          if (
+            event.target.id === "modal"
+          ) {
+
+            event.currentTarget
+              .classList.remove("show");
+
+          }
+
+        }
+      );
+
+
+    document.getElementById("open")
+      .addEventListener(
+        "click",
+        openCase
+      );
+
+
+    load();
 
   </script>
 
 </body>
+
 </html>
