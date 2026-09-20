@@ -1,26 +1,1074 @@
-<!doctype html>
-<html lang="et">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Steam Collect — Demo</title>
-<style>
-*{box-sizing:border-box}body{margin:0;background:#090b12;color:#eef2ff;font-family:Inter,system-ui,Arial,sans-serif}header{height:72px;border-bottom:1px solid #202638;background:#0d1019;display:flex;align-items:center;justify-content:space-between;padding:0 6vw;position:sticky;top:0;z-index:2}.logo{font-weight:900;letter-spacing:.5px}.logo span{color:#7c8cff}.user{display:flex;gap:12px;align-items:center}.btn{border:0;border-radius:10px;padding:12px 18px;font-weight:800;cursor:pointer;background:#7c8cff;color:white}.btn:hover{filter:brightness(1.08)}.ghost{background:#1a2030}.wrap{max-width:1100px;margin:auto;padding:60px 20px}.hero{text-align:center;padding:55px 0}.hero h1{font-size:clamp(42px,7vw,76px);margin:0 0 14px}.hero p{color:#9aa4bd;max-width:620px;margin:0 auto 28px;line-height:1.6}.card{background:linear-gradient(145deg,#111625,#0c101a);border:1px solid #20283c;border-radius:20px;padding:24px;box-shadow:0 20px 70px #0005}.stats{display:flex;gap:12px;justify-content:center;margin-bottom:25px}.stat{background:#111726;border:1px solid #242d43;padding:12px 18px;border-radius:12px;color:#aeb8cf}.stat b{color:white}.case{max-width:720px;margin:auto;text-align:center}.casebox{height:190px;border:1px solid #303a55;border-radius:18px;display:grid;place-items:center;background:radial-gradient(circle at center,#1b2440,#0b0e16 65%);margin:20px 0;overflow:hidden}.item{font-size:38px;font-weight:900;letter-spacing:1px}.rarity{margin-top:8px;color:#aab5ce}.inventory{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-top:18px}.inv{padding:18px;border-radius:14px;border:1px solid #252e44;background:#101522}.inv b{display:block;margin-bottom:7px}.Common{color:#b9c2d0}.Uncommon{color:#6ee7a5}.Rare{color:#65a9ff}.Epic{color:#c184ff}.Legendary{color:#ffbf69}.note{color:#77829b;font-size:13px;margin-top:25px;text-align:center}.hidden{display:none}
-</style></head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkinClub — Demo</title>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    :root {
+      --bg: #08090d;
+      --panel: #11141c;
+      --panel2: #171a23;
+      --border: #292e3a;
+      --text: #f5f7fb;
+      --muted: #858d9e;
+      --purple: #805cff;
+      --purple2: #a98cff;
+      --cyan: #36d9ff;
+      --yellow: #f3c64f;
+    }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 80% 0%, rgba(128,92,255,.18), transparent 30%),
+        radial-gradient(circle at 20% 100%, rgba(54,217,255,.08), transparent 30%),
+        var(--bg);
+      color: var(--text);
+      font-family: Inter, system-ui, Arial, sans-serif;
+    }
+
+    button {
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .sidebar {
+      position: fixed;
+      inset: 0 auto 0 0;
+      width: 235px;
+      padding: 22px 16px;
+      background: rgba(8,9,13,.96);
+      border-right: 1px solid var(--border);
+      z-index: 10;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 5px 8px 38px;
+      font-size: 20px;
+      font-weight: 900;
+    }
+
+    .logo-box {
+      width: 35px;
+      height: 35px;
+      border-radius: 10px;
+      background: linear-gradient(135deg,var(--purple),var(--cyan));
+      box-shadow: 0 0 30px rgba(128,92,255,.4);
+    }
+
+    .logo span span {
+      color: var(--purple2);
+    }
+
+    .menu-title {
+      margin: 18px 10px 8px;
+      color: #606878;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+    }
+
+    .menu a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 12px;
+      margin: 3px 0;
+      border-radius: 10px;
+      color: #9199aa;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 650;
+    }
+
+    .menu a:hover,
+    .menu a.active {
+      color: white;
+      background: #171a23;
+    }
+
+    .menu-icon {
+      width: 20px;
+      text-align: center;
+      font-size: 16px;
+    }
+
+    .demo-box {
+      position: absolute;
+      left: 16px;
+      right: 16px;
+      bottom: 18px;
+      padding: 13px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #0d0f14;
+      color: #747d8f;
+      font-size: 10px;
+      line-height: 1.6;
+    }
+
+    .demo-box strong {
+      color: var(--purple2);
+    }
+
+    .main {
+      margin-left: 235px;
+      min-height: 100vh;
+      padding: 18px 28px 60px;
+    }
+
+    .topbar {
+      height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 22px;
+    }
+
+    .breadcrumb {
+      color: #71798b;
+      font-size: 12px;
+    }
+
+    .breadcrumb strong {
+      color: white;
+    }
+
+    .account {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .coins {
+      padding: 9px 13px;
+      border: 1px solid #373d4a;
+      border-radius: 10px;
+      background: #12151c;
+      color: var(--yellow);
+      font-size: 13px;
+      font-weight: 850;
+    }
+
+    .steam-login,
+    .logout {
+      border-radius: 10px;
+      padding: 10px 16px;
+      font-weight: 850;
+      cursor: pointer;
+    }
+
+    .steam-login {
+      border: 0;
+      background: white;
+      color: #08090d;
+    }
+
+    .logout {
+      display: none;
+      border: 1px solid #303541;
+      background: #171a22;
+      color: white;
+    }
+
+    .hero {
+      position: relative;
+      min-height: 340px;
+      overflow: hidden;
+      border: 1px solid #303542;
+      border-radius: 20px;
+      background:
+        radial-gradient(circle at 80% 35%,rgba(128,92,255,.5),transparent 27%),
+        radial-gradient(circle at 90% 80%,rgba(54,217,255,.18),transparent 25%),
+        linear-gradient(110deg,#101218,#181526 55%,#0c1018);
+    }
+
+    .hero::after {
+      content: "✦";
+      position: absolute;
+      right: 12%;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 190px;
+      color: rgba(255,255,255,.035);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 55px;
+      max-width: 700px;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 7px 10px;
+      border: 1px solid rgba(158,132,255,.35);
+      border-radius: 999px;
+      background: rgba(128,92,255,.12);
+      color: #bcaeff;
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+
+    .hero h1 {
+      margin: 18px 0 14px;
+      font-size: clamp(44px,6vw,72px);
+      line-height: .92;
+      letter-spacing: -.055em;
+    }
+
+    .hero h1 span {
+      color: #a38cff;
+    }
+
+    .hero p {
+      max-width: 520px;
+      margin: 0 0 26px;
+      color: #979faf;
+      line-height: 1.65;
+      font-size: 14px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .primary,
+    .secondary {
+      border-radius: 11px;
+      padding: 13px 19px;
+      font-weight: 900;
+    }
+
+    .primary {
+      border: 0;
+      background: linear-gradient(135deg,#8567ff,#5d43dc);
+      color: white;
+      box-shadow: 0 12px 35px rgba(101,73,230,.25);
+    }
+
+    .secondary {
+      border: 1px solid #383d4a;
+      background: #151821;
+      color: white;
+      text-decoration: none;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      margin: 34px 0 14px;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .section-head span {
+      color: #727a8b;
+      font-size: 11px;
+    }
+
+    .cases {
+      display: grid;
+      grid-template-columns: repeat(4,1fr);
+      gap: 14px;
+    }
+
+    .case {
+      padding: 15px;
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      background: linear-gradient(180deg,#141720,#0e1016);
+      transition: .18s;
+    }
+
+    .case:hover {
+      transform: translateY(-4px);
+      border-color: #555c6c;
+      box-shadow: 0 20px 45px rgba(0,0,0,.3);
+    }
+
+    .case-art {
+      height: 170px;
+      display: grid;
+      place-items: center;
+      border-radius: 11px;
+      background:
+        radial-gradient(circle,rgba(128,92,255,.35),transparent 35%),
+        linear-gradient(135deg,#202432,#0b0d12);
+      font-size: 70px;
+    }
+
+    .case:nth-child(2) .case-art {
+      background:
+        radial-gradient(circle,rgba(54,217,255,.3),transparent 35%),
+        linear-gradient(135deg,#17242d,#0b0d12);
+    }
+
+    .case:nth-child(3) .case-art {
+      background:
+        radial-gradient(circle,rgba(104,118,255,.3),transparent 35%),
+        linear-gradient(135deg,#1c2033,#0b0d12);
+    }
+
+    .case:nth-child(4) .case-art {
+      background:
+        radial-gradient(circle,rgba(195,92,255,.3),transparent 35%),
+        linear-gradient(135deg,#25192e,#0b0d12);
+    }
+
+    .case h3 {
+      margin: 13px 0 4px;
+      font-size: 15px;
+    }
+
+    .case small {
+      color: #747d8f;
+    }
+
+    .case-price {
+      margin-top: 13px;
+      color: var(--yellow);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .inventory {
+      display: grid;
+      grid-template-columns: repeat(5,1fr);
+      gap: 12px;
+    }
+
+    .skin {
+      padding: 10px;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      background: #12151c;
+    }
+
+    .skin-art {
+      height: 105px;
+      display: grid;
+      place-items: center;
+      border-radius: 9px;
+      background: #181b24;
+      font-size: 38px;
+    }
+
+    .skin-name {
+      display: block;
+      margin-top: 9px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .skin-rarity {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    .empty {
+      grid-column: 1/-1;
+      padding: 30px;
+      border: 1px dashed #303642;
+      border-radius: 13px;
+      color: #747c8e;
+      text-align: center;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      place-items: center;
+      padding: 20px;
+      background: rgba(2,3,5,.78);
+      backdrop-filter: blur(9px);
+      z-index: 100;
+    }
+
+    .modal.show {
+      display: grid;
+    }
+
+    .modal-box {
+      width: min(700px,100%);
+      padding: 20px;
+      border: 1px solid #363b49;
+      border-radius: 18px;
+      background: #10131b;
+      box-shadow: 0 35px 100px rgba(0,0,0,.75);
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .modal-header h3 {
+      margin: 0;
+    }
+
+    .close {
+      width: 34px;
+      height: 34px;
+      border: 0;
+      border-radius: 9px;
+      background: #1b1f28;
+      color: #aab1bf;
+      font-size: 20px;
+    }
+
+    .reel {
+      position: relative;
+      height: 180px;
+      display: grid;
+      place-items: center;
+      margin: 20px 0;
+      border: 1px solid #2b3040;
+      border-radius: 13px;
+      overflow: hidden;
+      background: #10131a;
+    }
+
+    .reel::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 2px;
+      background: var(--purple);
+      box-shadow: 0 0 18px var(--purple);
+    }
+
+    .reel-icon {
+      position: relative;
+      z-index: 2;
+      font-size: 75px;
+    }
+
+    .result {
+      min-height: 62px;
+      text-align: center;
+    }
+
+    .result strong {
+      display: block;
+      font-size: 22px;
+    }
+
+    .result span {
+      color: #858d9e;
+      font-size: 12px;
+    }
+
+    .modal-note {
+      margin-top: 13px;
+      color: #686f7e;
+      font-size: 10px;
+      text-align: center;
+    }
+
+    @media(max-width:1050px) {
+      .cases { grid-template-columns: repeat(2,1fr); }
+      .inventory { grid-template-columns: repeat(3,1fr); }
+    }
+
+    @media(max-width:720px) {
+      .sidebar { width: 65px; }
+      .logo span,
+      .menu-title,
+      .menu a span:last-child,
+      .demo-box { display:none; }
+
+      .menu a { justify-content:center; }
+      .main { margin-left:65px; padding:14px; }
+
+      .hero-content { padding:35px 25px; }
+      .hero h1 { font-size:45px; }
+
+      .cases { grid-template-columns:1fr; }
+      .inventory { grid-template-columns:repeat(2,1fr); }
+    }
+  </style>
+</head>
+
 <body>
-<header><div class="logo">STEAM <span>COLLECT</span></div><div id="account"></div></header>
-<main class="wrap">
-<section id="loggedOut" class="hero"><h1>Collect. Open. Discover.</h1><p>Steam-loginiga kollektsiooni-demo, kus saad avada virtuaalseid kosmeetilisi esemeid ja koguda oma inventari.</p><a class="btn" href="/auth/steam">Sign in through Steam</a><div class="note">Demo only — no real money, trading or cash-out.</div></section>
-<section id="app" class="hidden">
-<div class="stats"><div class="stat">Demo coins: <b id="coins">0</b></div><button class="btn ghost" onclick="logout()">Log out</button></div>
-<div class="card case"><h2>✨ Mystery Case</h2><p class="rarity">Cost: 100 demo coins</p><div class="casebox"><div><div id="result" class="item">?</div><div id="rarity" class="rarity">Open a case</div></div></div><button class="btn" onclick="openCase()">OPEN CASE</button></div>
-<h2 style="margin-top:55px">Your Collection</h2><div id="inventory" class="inventory"></div>
-<div class="note">This prototype uses Steam OpenID only for identity. Your Steam password is never entered into this site.</div>
-</section></main>
-<script>
-const $=id=>document.getElementById(id);
-async function load(){const r=await fetch('/api/me');const d=await r.json();if(!d.loggedIn)return;$('loggedOut').classList.add('hidden');$('app').classList.remove('hidden');$('account').innerHTML='<span>'+d.steamId+'</span>';$('coins').textContent=d.coins;render(d.inventory)}
-function render(items){$('inventory').innerHTML=items.length?items.map(x=>`<div class="inv"><b class="${x.rarity}">${x.name}</b><span class="${x.rarity}">${x.rarity}</span></div>`).join(''):'<div class="note">Your collection is empty.</div>'}
-async function openCase(){const r=await fetch('/api/open',{method:'POST',headers:{'Content-Type':'application/json'}});const d=await r.json();if(!r.ok)return alert(d.error);$('result').textContent=d.item.name;$('rarity').textContent=d.item.rarity;$('rarity').className='rarity '+d.item.rarity;$('coins').textContent=d.coins;render(d.inventory)}
-async function logout(){await fetch('/api/logout',{method:'POST'});location.reload()}
-load();
-</script></body></html>
+
+  <aside class="sidebar">
+
+    <div class="logo">
+      <div class="logo-box"></div>
+      <span>SKINCLUB<span>.</span></span>
+    </div>
+
+    <div class="menu-title">Menu</div>
+
+    <nav class="menu">
+      <a href="#" class="active">
+        <span class="menu-icon">⌂</span>
+        <span>Home</span>
+      </a>
+
+      <a href="#cases">
+        <span class="menu-icon">◈</span>
+        <span>Cases</span>
+      </a>
+
+      <a href="#inventory">
+        <span class="menu-icon">▣</span>
+        <span>Inventory</span>
+      </a>
+
+      <a href="#event">
+        <span class="menu-icon">✦</span>
+        <span>Event</span>
+      </a>
+    </nav>
+
+    <div class="menu-title">Account</div>
+
+    <nav class="menu">
+      <a href="#inventory">
+        <span class="menu-icon">◉</span>
+        <span>Profile</span>
+      </a>
+
+      <a href="#" id="sideLogout">
+        <span class="menu-icon">↪</span>
+        <span>Log out</span>
+      </a>
+    </nav>
+
+    <div class="demo-box">
+      <strong>DEMO MODE</strong><br>
+      Virtual coins only.<br>
+      No real-money deposits,<br>
+      betting or withdrawals.
+    </div>
+
+  </aside>
+
+
+  <main class="main">
+
+    <header class="topbar">
+
+      <div class="breadcrumb">
+        Home › <strong>Event</strong>
+      </div>
+
+      <div class="account">
+
+        <div class="coins" id="coinBalance">
+          🪙 —
+        </div>
+
+        <button class="steam-login" id="loginButton">
+          Sign in with Steam
+        </button>
+
+        <button class="logout" id="logoutButton">
+          Log out
+        </button>
+
+      </div>
+
+    </header>
+
+
+    <section class="hero" id="event">
+
+      <div class="hero-content">
+
+        <div class="tag">
+          Limited Demo Event
+        </div>
+
+        <h1>
+          OPEN THE<br>
+          <span>UNKNOWN.</span>
+        </h1>
+
+        <p>
+          Collect virtual CS-style skins, build your inventory
+          and discover rare drops. Everything here uses
+          demo coins only.
+        </p>
+
+        <div class="hero-buttons">
+          <button class="primary" id="heroCaseButton">
+            Open a Case
+          </button>
+
+          <a class="secondary" href="#cases">
+            View Cases
+          </a>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <div class="section-head" id="cases">
+      <h2>Featured Cases</h2>
+      <span>Virtual collection</span>
+    </div>
+
+
+    <section class="cases">
+
+      <article class="case" data-case="Nebula Case">
+        <div class="case-art">🔮</div>
+        <h3>Nebula Case</h3>
+        <small>5 possible drops</small>
+        <div class="case-price">🪙 100 demo coins</div>
+      </article>
+
+      <article class="case" data-case="Aurora Case">
+        <div class="case-art">🌌</div>
+        <h3>Aurora Case</h3>
+        <small>5 possible drops</small>
+        <div class="case-price">🪙 100 demo coins</div>
+      </article>
+
+      <article class="case" data-case="Eclipse Case">
+        <div class="case-art">🌑</div>
+        <h3>Eclipse Case</h3>
+        <small>5 possible drops</small>
+        <div class="case-price">🪙 100 demo coins</div>
+      </article>
+
+      <article class="case" data-case="Void Case">
+        <div class="case-art">💠</div>
+        <h3>Void Case</h3>
+        <small>5 possible drops</small>
+        <div class="case-price">🪙 100 demo coins</div>
+      </article>
+
+    </section>
+
+
+    <div class="section-head" id="inventory">
+      <h2>Your Inventory</h2>
+      <span id="inventoryCount">0 items</span>
+    </div>
+
+
+    <section class="inventory" id="inventoryGrid">
+
+      <div class="empty">
+        Sign in with Steam to view your inventory.
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <div class="modal" id="caseModal">
+
+    <div class="modal-box">
+
+      <div class="modal-header">
+        <h3 id="modalTitle">Opening Case</h3>
+
+        <button class="close" id="closeModal">
+          ×
+        </button>
+      </div>
+
+      <div class="reel">
+        <div class="reel-icon" id="reelIcon">
+          🔮
+        </div>
+      </div>
+
+      <div class="result" id="caseResult">
+        <span>
+          Click open to reveal your virtual drop.
+        </span>
+      </div>
+
+      <button
+        class="primary"
+        id="openCaseButton"
+        style="width:100%;margin-top:14px;"
+      >
+        Open Case · 100 🪙
+      </button>
+
+      <div class="modal-note">
+        DEMO ONLY — virtual coins have no real-world value.
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <script>
+
+    const rarityIcons = {
+      Common: "🔫",
+      Uncommon: "🗡️",
+      Rare: "⚡",
+      Epic: "💜",
+      Legendary: "👑"
+    };
+
+    let me = null;
+    let selectedCase = "Nebula Case";
+    let opening = false;
+
+
+    async function loadAccount() {
+
+      try {
+
+        const response = await fetch("/api/me");
+        me = await response.json();
+
+        renderAccount();
+
+      } catch (error) {
+        console.error(error);
+      }
+
+    }
+
+
+    function renderAccount() {
+
+      const loggedIn =
+        me && me.loggedIn;
+
+      document.getElementById("coinBalance")
+        .textContent =
+        loggedIn ? `🪙 ${me.coins}` : "🪙 —";
+
+      document.getElementById("loginButton")
+        .style.display =
+        loggedIn ? "none" : "block";
+
+      document.getElementById("logoutButton")
+        .style.display =
+        loggedIn ? "block" : "none";
+
+      renderInventory();
+
+    }
+
+
+    function renderInventory() {
+
+      const grid =
+        document.getElementById("inventoryGrid");
+
+      const count =
+        document.getElementById("inventoryCount");
+
+
+      if (!me || !me.loggedIn) {
+
+        count.textContent = "0 items";
+
+        grid.innerHTML = `
+          <div class="empty">
+            Sign in with Steam to view your inventory.
+          </div>
+        `;
+
+        return;
+      }
+
+
+      const inventory = me.inventory || [];
+
+      count.textContent =
+        `${inventory.length} item${inventory.length === 1 ? "" : "s"}`;
+
+
+      if (!inventory.length) {
+
+        grid.innerHTML = `
+          <div class="empty">
+            Your inventory is empty.
+            Open a demo case to collect your first skin.
+          </div>
+        `;
+
+        return;
+      }
+
+
+      grid.innerHTML = inventory.map(item => {
+
+        const rarity =
+          item.rarity || "Common";
+
+        return `
+          <div class="skin">
+            <div class="skin-art">
+              ${rarityIcons[rarity] || "🔫"}
+            </div>
+
+            <span class="skin-name">
+              ${item.name}
+            </span>
+
+            <span class="skin-rarity">
+              ${rarity}
+            </span>
+          </div>
+        `;
+
+      }).join("");
+
+    }
+
+
+    function openModal(caseName) {
+
+      if (!me || !me.loggedIn) {
+
+        window.location.href =
+          "/auth/steam";
+
+        return;
+      }
+
+
+      selectedCase =
+        caseName || "Nebula Case";
+
+
+      document.getElementById("modalTitle")
+        .textContent = selectedCase;
+
+      document.getElementById("reelIcon")
+        .textContent = "🔮";
+
+      document.getElementById("caseResult")
+        .innerHTML =
+        "<span>Click open to reveal your virtual drop.</span>";
+
+      document.getElementById("openCaseButton")
+        .disabled = false;
+
+      document.getElementById("openCaseButton")
+        .textContent =
+        "Open Case · 100 🪙";
+
+      document.getElementById("caseModal")
+        .classList.add("show");
+
+    }
+
+
+    async function openCase() {
+
+      if (opening) return;
+
+      opening = true;
+
+      const button =
+        document.getElementById("openCaseButton");
+
+      const icon =
+        document.getElementById("reelIcon");
+
+      const result =
+        document.getElementById("caseResult");
+
+
+      button.disabled = true;
+      button.textContent = "Opening...";
+
+
+      const icons =
+        ["🔫","🗡️","⚡","💜","👑"];
+
+      let i = 0;
+
+      const animation =
+        setInterval(() => {
+
+          icon.textContent =
+            icons[i % icons.length];
+
+          i++;
+
+        }, 100);
+
+
+      try {
+
+        const response =
+          await fetch("/api/open", {
+            method: "POST",
+            headers: {
+              "Content-Type":
+                "application/json"
+            }
+          });
+
+
+        const data =
+          await response.json();
+
+
+        clearInterval(animation);
+
+
+        if (!response.ok) {
+
+          result.innerHTML =
+            `<span>${data.error || "Could not open case."}</span>`;
+
+          button.disabled = false;
+          button.textContent =
+            "Open Case · 100 🪙";
+
+          opening = false;
+          return;
+
+        }
+
+
+        icon.textContent =
+          rarityIcons[data.item.rarity] || "🔫";
+
+
+        result.innerHTML = `
+          <strong>${data.item.name}</strong>
+          <span>${data.item.rarity} · Added to inventory</span>
+        `;
+
+
+        me.coins = data.coins;
+        me.inventory = data.inventory;
+
+        renderAccount();
+
+        button.textContent = "Opened ✓";
+
+
+      } catch (error) {
+
+        clearInterval(animation);
+
+        result.innerHTML =
+          "<span>Network error. Try again.</span>";
+
+        button.disabled = false;
+        button.textContent =
+          "Open Case · 100 🪙";
+
+      }
+
+
+      opening = false;
+
+    }
+
+
+    document.getElementById("loginButton")
+      .addEventListener("click", () => {
+        window.location.href =
+          "/auth/steam";
+      });
+
+
+    document.getElementById("logoutButton")
+      .addEventListener("click", async () => {
+
+        await fetch("/api/logout", {
+          method: "POST"
+        });
+
+        location.reload();
+
+      });
+
+
+    document.getElementById("sideLogout")
+      .addEventListener("click", async event => {
+
+        event.preventDefault();
+
+        await fetch("/api/logout", {
+          method: "POST"
+        });
+
+        location.reload();
+
+      });
+
+
+    document.getElementById("heroCaseButton")
+      .addEventListener("click", () => {
+        openModal("Nebula Case");
+      });
+
+
+    document.querySelectorAll(".case")
+      .forEach(card => {
+
+        card.addEventListener("click", () => {
+          openModal(card.dataset.case);
+        });
+
+      });
+
+
+    document.getElementById("closeModal")
+      .addEventListener("click", () => {
+
+        document.getElementById("caseModal")
+          .classList.remove("show");
+
+      });
+
+
+    document.getElementById("caseModal")
+      .addEventListener("click", event => {
+
+        if (event.target.id === "caseModal") {
+          event.currentTarget
+            .classList.remove("show");
+        }
+
+      });
+
+
+    document.getElementById("openCaseButton")
+      .addEventListener("click", openCase);
+
+
+    loadAccount();
+
+  </script>
+
+</body>
+</html>
